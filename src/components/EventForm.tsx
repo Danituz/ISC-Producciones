@@ -129,9 +129,9 @@ export default function EventForm({
     >
       <Tabs value={step} onValueChange={(v) => setStep(v as any)} className="w-full">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="1">Evento</TabsTrigger>
-          <TabsTrigger value="2">Equipo</TabsTrigger>
-          <TabsTrigger value="3">Croquis & Escenas</TabsTrigger>
+          <TabsTrigger value="1">Paso 1</TabsTrigger>
+          <TabsTrigger value="2">Paso 2</TabsTrigger>
+          <TabsTrigger value="3">Paso 3</TabsTrigger>
         </TabsList>
 
         {/* PASO 1 */}
@@ -141,7 +141,7 @@ export default function EventForm({
               <div>
                 <Label>Evento / Iglesia</Label>
                 <Input
-                  className="h-11 text-base"
+                  className="h-11 text-base mt-2"
                   value={values.church_or_event}
                   onChange={(e) => set("church_or_event", e.target.value)}
                   placeholder="Servicio, Concierto, Iglesia…"
@@ -152,7 +152,7 @@ export default function EventForm({
               <div>
                 <Label>Pastor(a) / Organizador</Label>
                 <Input
-                  className="h-11 text-base"
+                  className="h-11 text-base mt-2"
                   value={values.pastor_name}
                   onChange={(e) => set("pastor_name", e.target.value)}
                   placeholder="Nombre"
@@ -163,7 +163,7 @@ export default function EventForm({
                 <Label>Fecha</Label>
                 <Input
                   type="date"
-                  className="h-11 text-base"
+                  className="h-11 text-base mt-2"
                   value={values.date}
                   onChange={(e) => set("date", e.target.value)}
                   required
@@ -218,6 +218,7 @@ export default function EventForm({
               <div>
                 <Label>Integrantes (Audio)</Label>
                 <MemberMultiSelect
+                className="mt-2"
                   value={values.audio_members}
                   onChange={(v) => set("audio_members", v)}
                   placeholder="Seleccionar"
@@ -227,6 +228,8 @@ export default function EventForm({
               <div>
                 <Label>Integrantes (Luces)</Label>
                 <MemberMultiSelect
+                                className="mt-2"
+
                   value={values.lights_members}
                   onChange={(v) => set("lights_members", v)}
                   placeholder="Seleccionar"
@@ -252,6 +255,7 @@ export default function EventForm({
               <div>
                 <Label>Croquis</Label>
                 <CroquisSelect
+                
                   value={values.croquis_id ?? null}
                   onChange={(v) => set("croquis_id", v)}
                   placeholder="Selecciona croquis"
@@ -261,6 +265,7 @@ export default function EventForm({
               <div>
                 <Label>Escena Audio</Label>
                 <SceneSelect
+                
                   type="audio"
                   value={values.scene_audio_id ?? null}
                   onChange={(v) => set("scene_audio_id", v)}
