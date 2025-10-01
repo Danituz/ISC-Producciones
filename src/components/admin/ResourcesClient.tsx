@@ -313,61 +313,14 @@ export default function ResourcesClient() {
   return (
     <section className="space-y-4">
       <h2 className="text-xl font-semibold">Recursos</h2>
-      < defaultValue="members" className="w-full">
-        {/* Scrollable en móvil, grid en desktop */}
-        <TabsList
-          aria-label="Secciones de recursos"
-          className="
-            flex gap-1 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden
-            sm:grid sm:grid-cols-5 sm:overflow-visible
-          "
-        >
-          <TabsTrigger
-            value="members"
-            className="shrink-0 px-3 py-2 text-sm sm:text-base"
-            title="Integrantes"
-          >
-            <Users className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="whitespace-nowrap">Integrantes</span>
-          </TabsTrigger>
-
-          <TabsTrigger
-            value="sa"
-            className="shrink-0 px-3 py-2 text-sm sm:text-base"
-            title="Escenas de audio"
-          >
-            <Waves className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="whitespace-nowrap">Escenas Audio</span>
-          </TabsTrigger>
-
-          <TabsTrigger
-            value="sl"
-            className="shrink-0 px-3 py-2 text-sm sm:text-base"
-            title="Escenas de luces"
-          >
-            <Lightbulb className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="whitespace-nowrap">Escenas Luces</span>
-          </TabsTrigger>
-
-          <TabsTrigger
-            value="croquis"
-            className="shrink-0 px-3 py-2 text-sm sm:text-base"
-            title="Croquis"
-          >
-            <Map className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="whitespace-nowrap">Croquis</span>
-          </TabsTrigger>
-
-          <TabsTrigger
-            value="channels"
-            className="shrink-0 px-3 py-2 text-sm sm:text-base"
-            title="Canales"
-          >
-            <SlidersHorizontal className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="whitespace-nowrap">Canales</span>
-          </TabsTrigger>
+      <Tabs defaultValue="members" className="w-full">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="members">Int</TabsTrigger>
+          <TabsTrigger value="sa">Esc Audio</TabsTrigger>
+          <TabsTrigger value="sl">Esc Luces</TabsTrigger>
+          <TabsTrigger value="croquis">Croquis</TabsTrigger>
+          <TabsTrigger value="channels">Canales</TabsTrigger>
         </TabsList>
-      
 
         <TabsContent value="members">
           <Catalog
