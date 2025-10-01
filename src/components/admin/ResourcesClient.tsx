@@ -130,7 +130,6 @@ function CroquisCatalog() {
             <Input value={name} onChange={(e)=>setName(e.target.value)} placeholder="Nuevo croquis" />
             <Button onClick={addNameOnly}>Agregar</Button>
           </div>
-          <Button variant="secondary" onClick={newWithEditor}>Nuevo con editor</Button>
         </div>
 
         <div className="grid grid-cols-1 gap-2">
@@ -151,7 +150,7 @@ function CroquisCatalog() {
                   window.open(`/croquis/editor?id=${it.id}&returnTo=${rt}`, "_blank");
                 }}
               >
-                Editar
+                + Croquis
               </Button>
               <Button size="sm" variant="destructive" onClick={()=>del(it.id)}>Eliminar</Button>
             </div>
@@ -209,7 +208,7 @@ function ChannelPresetsCatalog() {
             {list.map((it)=>(
               <div key={it.id} className="flex items-center gap-2 rounded-md border p-2">
                 <div className="flex-1 text-sm">{it.name}</div>
-                <Button size="sm" variant="secondary" onClick={()=>setOpenEdit({ open: true, preset: it })}>Editar</Button>
+                <Button size="sm" variant="secondary" onClick={()=>setOpenEdit({ open: true, preset: it })}>+ Canales</Button>
                 <Button size="sm" variant="destructive" onClick={()=>del(it.id)}>Eliminar</Button>
               </div>
             ))}

@@ -566,9 +566,7 @@ export default function CroquisEditor() {
             <Button size="sm" variant="secondary" className="h-10 flex-col gap-1" onClick={exportPNG}>
               <Download className="size-4" /><span className="text-[10px]">Export</span>
             </Button>
-            <Button size="sm" className="h-10 flex-col gap-1" onClick={saveAndReturn}>
-              <CheckCircle2 className="size-4" /><span className="text-[10px]">Usar</span>
-            </Button>
+            
           </div>
           <div className="mt-2 grid grid-cols-1">
             <Button size="sm" variant="secondary" className="h-10 gap-2" onClick={saveToResources}>
