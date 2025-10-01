@@ -636,7 +636,7 @@ export default function CroquisEditor() {
             <div>
               <Label className="text-xs">Instrumento</Label>
               <Select value={insType} onValueChange={(v: InstrumentType) => setInsType(v)}>
-                <SelectTrigger className="h-11 text-base"><SelectValue placeholder="Selecciona instrumento" /></SelectTrigger>
+                <SelectTrigger className="h-11 text-base mt-2"><SelectValue placeholder="Selecciona instrumento" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="bateria">Batería</SelectItem>
                   <SelectItem value="guitarra">Guitarra</SelectItem>
@@ -666,7 +666,7 @@ export default function CroquisEditor() {
             <div>
               <Label className="text-xs">Grupo</Label>
               <Select value={monGroup} onValueChange={(v: MonitorNode["group"]) => setMonGroup(v)}>
-                <SelectTrigger className="h-11 text-base"><SelectValue placeholder="Selecciona grupo" /></SelectTrigger>
+                <SelectTrigger className="h-11 text-base mt-2"><SelectValue placeholder="Selecciona grupo" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="1-2">1-2</SelectItem>
                   <SelectItem value="3-4">3-4</SelectItem>
@@ -716,7 +716,7 @@ export default function CroquisEditor() {
               <div>
                 <Label className="text-xs">Instrumento</Label>
                 <Select value={editIns.instrument} onValueChange={(v: InstrumentType) => setEditIns({ ...editIns, instrument: v })}>
-                  <SelectTrigger className="h-11 text-base"><SelectValue placeholder="Selecciona instrumento" /></SelectTrigger>
+                  <SelectTrigger className="h-11 text-base" mt-2><SelectValue placeholder="Selecciona instrumento" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="bateria">Batería</SelectItem>
                     <SelectItem value="guitarra">Guitarra</SelectItem>
@@ -737,7 +737,7 @@ export default function CroquisEditor() {
               <div>
                 <Label className="text-xs">Grupo</Label>
                 <Select value={editMon.group} onValueChange={(v: MonitorNode["group"]) => setEditMon({ ...editMon, group: v })}>
-                  <SelectTrigger className="h-11 text-base"><SelectValue placeholder="Selecciona grupo" /></SelectTrigger>
+                  <SelectTrigger className="h-11 text-base mt-2"><SelectValue placeholder="Selecciona grupo" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="1-2">1-2</SelectItem>
                     <SelectItem value="3-4">3-4</SelectItem>

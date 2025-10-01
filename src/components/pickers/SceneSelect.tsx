@@ -48,7 +48,7 @@ export default function SceneSelect({
       value={value ?? undefined}
       onValueChange={(v) => onChange(v === "none" ? null : v)}
     >
-      <SelectTrigger className="h-11 text-base">
+      <SelectTrigger className="mt-2 h-11 text-base">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

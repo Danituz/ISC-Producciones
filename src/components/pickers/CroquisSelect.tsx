@@ -44,7 +44,7 @@ export default function CroquisSelect({
       value={value ?? undefined}
       onValueChange={(v) => onChange(v === "none" ? null : v)}
     >
-      <SelectTrigger className="h-11 text-base">
+      <SelectTrigger className="h-11 text-base mt-2">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
