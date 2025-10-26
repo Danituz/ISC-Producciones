@@ -42,6 +42,34 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   }
   const patch = parsed.data;
 
+  // Si cambian el preset y no mandan canales, denormaliza canales del preset
+  if (typeof patch.channel_preset_id !== "undefined" && typeof patch.channels === "undefined") {
+    const presetId = patch.channel_preset_id;
+    if (presetId) {
+      let ch: any[] | null = null;
+      let err: any = null;
+      ({ data: ch, error: err } = await s
+        .from("channel_presets")
+        .select("channels")
+        .eq("id", presetId)
+        .eq("user_id", user.id)
+        .maybeSingle()
+        .then(r => ({ data: (r.data as any)?.channels ?? null, error: r.error })));
+      if (err || !Array.isArray(ch)) {
+        ({ data: ch } = await s
+          .from("chanel_preset")
+          .select("channels")
+          .eq("id", presetId)
+          .eq("user_id", user.id)
+          .maybeSingle()
+          .then(r => ({ data: (r.data as any)?.channels ?? null })));
+      }
+      if (Array.isArray(ch)) (patch as any).channels = ch;
+    } else {
+      // Si quitan el preset explícitamente, no forzamos canales; el cliente puede mandar channels aparte
+    }
+  }
+
   // Solo actualiza eventos del usuario (RLS de todas formas protege)
   const { data, error } = await s
     .from("events")

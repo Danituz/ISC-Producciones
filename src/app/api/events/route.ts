@@ -118,6 +118,29 @@ export async function POST(req: Request) {
     notes: body.notes ?? null,
   };
 
+  // Si viene un preset y no se enviaron canales ad-hoc, denormaliza los canales del preset
+  if (insert.channel_preset_id && (!Array.isArray(insert.channels) || insert.channels.length === 0)) {
+    let ch: any[] | null = null;
+    let err: any = null;
+    ({ data: ch, error: err } = await s
+      .from("channel_presets")
+      .select("channels")
+      .eq("id", insert.channel_preset_id)
+      .eq("user_id", user.id)
+      .maybeSingle()
+      .then(r => ({ data: (r.data as any)?.channels ?? null, error: r.error })));
+    if (err || !Array.isArray(ch)) {
+      ({ data: ch } = await s
+        .from("chanel_preset")
+        .select("channels")
+        .eq("id", insert.channel_preset_id)
+        .eq("user_id", user.id)
+        .maybeSingle()
+        .then(r => ({ data: (r.data as any)?.channels ?? null })));
+    }
+    if (Array.isArray(ch)) insert.channels = ch;
+  }
+
   const { data, error } = await s
     .from("events")
     .insert(insert)
