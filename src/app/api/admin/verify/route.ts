@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
-import { createRoute } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 
 export async function POST(req: Request) {
-  const s = createRoute();
+  // Use a mutable cookie store for Next 15 when mutating auth cookies
+  const cookieStore = await cookies();
+  const s = createRouteHandlerClient({ cookies: () => cookieStore });
   const { data: { user } } = await s.auth.getUser();
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
@@ -16,4 +19,3 @@ export async function POST(req: Request) {
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ ok: true });
 }
-

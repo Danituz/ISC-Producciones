@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createRoute } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 
 export async function GET(req: NextRequest) {
+  const cookieStore = await cookies();
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
   const next = url.searchParams.get("next") || "/admin"; // opcional: permite ?next=/admin
@@ -13,7 +15,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const supabase = createRoute();
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
     await supabase.auth.exchangeCodeForSession(code);
     // Auto-verify admin for Gmail if configured
     try {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { createRoute } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 
 function to12(hhmm: string) {
   const [H, m] = hhmm.split(":").map(Number);
@@ -9,7 +10,8 @@ function to12(hhmm: string) {
 }
 
 export async function GET() {
-  const s = createRoute();
+  const cookieStore = await cookies();
+  const s = createRouteHandlerClient({ cookies: () => cookieStore });
 
   // 1) Eventos (lectura pública permitida por policy)
   const { data: evs, error } = await s
