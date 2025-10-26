@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -22,17 +22,17 @@ export function NavbarActions() {
         <div className="hidden items-center gap-3 sm:flex">
           <Link href="/admin" className="text-sm text-zinc-300 hover:underline">Admin</Link>
           <Link href="/admin/resources" className="text-sm text-zinc-300 hover:underline">Recursos</Link>
-          <Link href="/admin/payroll" className="text-sm text-zinc-300 hover:underline">Nómina</Link>
+          <Link href="/admin/payroll" className="text-sm text-zinc-300 hover:underline">Nomina</Link>
         </div>
         <div className="sm:hidden">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="sm" variant="secondary">Menú</Button>
+              <Button size="sm" variant="secondary">Menu</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem asChild><Link href="/admin">Admin</Link></DropdownMenuItem>
               <DropdownMenuItem asChild><Link href="/admin/resources">Recursos</Link></DropdownMenuItem>
-              <DropdownMenuItem asChild><Link href="/admin/payroll">Nómina</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link href="/admin/payroll">Nomina</Link></DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -50,7 +50,7 @@ export function NavbarActions() {
 
   return (
     <Button asChild size="sm">
-      <Link href="/login">Iniciar sesión</Link>
+      <Link href="/login">Iniciar sesion</Link>
     </Button>
   );
 }
