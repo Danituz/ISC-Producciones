@@ -97,3 +97,19 @@ export async function DELETE(_req: Request, { params }: { params: { id: string }
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ ok: true });
 }
+
+export async function GET(_req: Request, { params }: { params: { id: string } }) {
+  const s = createRoute();
+  const { data: { user } } = await s.auth.getUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { data, error } = await s
+    .from("events")
+    .select("*")
+    .eq("id", params.id)
+    .eq("user_id", user.id)
+    .single();
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ data });
+}

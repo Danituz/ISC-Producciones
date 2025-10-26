@@ -40,6 +40,7 @@ export default function AdminClient({ userEmail }: { userEmail: string }) {
   const [events, setEvents] = useState<EventItem[]>([]);
   const [openNew, setOpenNew] = useState(false);
   const [openEdit, setOpenEdit] = useState<{ open: boolean; id?: string }>({ open: false });
+  const [editInitial, setEditInitial] = useState<Partial<EventFormValues> | null>(null);
 
   const currentEdit = useMemo(() => events.find(e => e.id === openEdit.id), [openEdit.id, events]);
 
@@ -62,6 +63,7 @@ export default function AdminClient({ userEmail }: { userEmail: string }) {
             // si el backend guarda ids, mapea a nombres si vienen resueltos; si no, muestra tal cual
             scene_audio: r.scene_audio_name ?? r.scene_audio ?? "",
             scene_lights: r.scene_lights_name ?? r.scene_lights ?? "",
+            channel_preset_name: r.channel_preset_name || undefined,
             assignments: [
               ...(r.audio_members || []).map((n: string) => ({ name: n, role: "audio" as const })),
               ...(r.lights_members || []).map((n: string) => ({ name: n, role: "luces" as const })),
@@ -83,6 +85,40 @@ export default function AdminClient({ userEmail }: { userEmail: string }) {
     return () => { active = false; };
   }, []);
 
+  // Cargar datos completos del evento al abrir edición
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      if (!openEdit.open || !openEdit.id) { setEditInitial(null); return; }
+      try {
+        const res = await fetch(`/api/events/${openEdit.id}`);
+        const j = await res.json();
+        if (!active) return;
+        if (res.ok) {
+          const e = j.data;
+          setEditInitial({
+            id: e.id,
+            church_or_event: e.church_or_event ?? "",
+            pastor_name: e.pastor_name ?? "",
+            date: e.date ?? "",
+            start_time: e.start_time ?? "",
+            end_time: e.end_time ?? "",
+            arrival_time: e.arrival_time ?? "",
+            audio_members: e.audio_members ?? [],
+            lights_members: e.lights_members ?? [],
+            scene_audio_id: e.scene_audio_id ?? null,
+            scene_lights_id: e.scene_lights_id ?? null,
+            croquis_id: e.croquis_id ?? null,
+            channel_preset_id: e.channel_preset_id ?? null,
+            channels: e.channels ?? [],
+            notes: e.notes ?? "",
+          });
+        }
+      } catch {}
+    })();
+    return () => { active = false; };
+  }, [openEdit.open, openEdit.id]);
+
   async function reload() {
     setLoading(true);
     const r = await fetch("/api/events", { cache: "no-store" });
@@ -96,6 +132,7 @@ export default function AdminClient({ userEmail }: { userEmail: string }) {
       time: timeRange(x),
       scene_audio: x.scene_audio_name ?? x.scene_audio ?? "",
       scene_lights: x.scene_lights_name ?? x.scene_lights ?? "",
+      channel_preset_name: x.channel_preset_name || undefined,
       assignments: [
         ...(x.audio_members || []).map((n: string) => ({ name: n, role: "audio" as const })),
         ...(x.lights_members || []).map((n: string) => ({ name: n, role: "luces" as const })),
@@ -215,7 +252,7 @@ export default function AdminClient({ userEmail }: { userEmail: string }) {
         <DialogContent className="sm:max-w-2xl">
           <DialogHeader><DialogTitle>Editar evento</DialogTitle></DialogHeader>
           <EventForm
-            initial={{
+            initial={editInitial ?? {
               id: currentEdit?.id,
               church_or_event: currentEdit?.church_or_event,
               pastor_name: currentEdit?.pastor_name,
@@ -276,6 +313,11 @@ function EventAdminCard({
             {data.scene_lights && <Badge variant="outline" className="gap-1"><Sparkles className="size-3" /> Luces: {data.scene_lights}</Badge>}
           </div>
         )}
+        {data.channel_preset_name ? (
+          <div className="flex flex-wrap gap-2">
+            <Badge variant="outline">Preset: {data.channel_preset_name}</Badge>
+          </div>
+        ) : null}
 
         {data.assignments?.length ? (
           <div className="flex flex-wrap gap-2">
@@ -313,3 +355,5 @@ function EventAdminCard({
     </Card>
   );
 }
+
+

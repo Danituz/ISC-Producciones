@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils";
 import { NavbarActions } from "@/components/Navbar";
 
 export const metadata: Metadata = {
-  title: "ISC Productions",
-  description: "Agenda de eventos de Audio y Luces",
+  title: "ISC Producciones",
+  description: "Plataforma para Gestionar Eventos de Audio y Luces",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3">
               <a className="flex items-center gap-2">
                 <div className="size-2 rounded-full bg-zinc-400" />
-                <span className="text-sm font-medium text-zinc-300">ISC Productions</span>
+                <span className="text-sm font-medium text-zinc-300">ISC Producciones</span>
               </a>
               <NavbarActions />
             </div>

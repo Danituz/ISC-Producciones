@@ -17,6 +17,7 @@ export type EventItem = {
   time: string;                 // "12:00 PM – 2:00 PM"
   scene_audio?: string;
   scene_lights?: string;
+  channel_preset_name?: string;
   assignments: Assignment[];
   channels: Channel[];
   croquis_image_url?: string;
