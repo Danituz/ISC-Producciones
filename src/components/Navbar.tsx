@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -34,8 +34,7 @@ export function NavbarActions() {
 
   return (
     <Button asChild size="sm">
-      <Link href="/login">Iniciar sesi�n</Link>
+      <Link href="/login">Iniciar sesión</Link>
     </Button>
   );
 }
-
