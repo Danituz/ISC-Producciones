@@ -16,11 +16,25 @@ export async function GET() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { data, error } = await supabase
+  // Try canonical table name, then fallback to common misspelling "chanel_preset"
+  let data: any[] | null = null;
+  let error: any = null;
+
+  ({ data, error } = await supabase
     .from("channel_presets")
     .select("id,name,channels,created_at,updated_at")
     .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false }))
+  ;
+
+  if (error) {
+    ({ data, error } = await supabase
+      .from("chanel_preset")
+      .select("id,name,channels,created_at,updated_at")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false }))
+    ;
+  }
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ data });
@@ -38,11 +52,23 @@ export async function POST(req: Request) {
   }
 
   const { name, channels } = parsed.data;
-  const { data, error } = await supabase
+  // Try canonical table name; on failure (e.g., table missing) fallback to chanel_preset
+  let data: any = null;
+  let error: any = null;
+
+  ({ data, error } = await supabase
     .from("channel_presets")
     .insert({ user_id: user.id, name, channels })
     .select("id,name,channels,created_at,updated_at")
-    .single();
+    .single());
+
+  if (error) {
+    ({ data, error } = await supabase
+      .from("chanel_preset")
+      .insert({ user_id: user.id, name, channels })
+      .select("id,name,channels,created_at,updated_at")
+      .single());
+  }
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ data }, { status: 201 });

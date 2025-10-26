@@ -27,13 +27,26 @@ export async function PATCH(_req: Request, { params }: { params: { id: string } 
   if (typeof parsed.data.name !== "undefined") patch.name = parsed.data.name;
   if (typeof parsed.data.channels !== "undefined") patch.channels = parsed.data.channels;
 
-  const { data, error } = await supabase
+  // Try canonical table, then fallback to common misspelling
+  let data: any = null;
+  let error: any = null;
+  ({ data, error } = await supabase
     .from("channel_presets")
     .update(patch)
     .eq("id", id)
     .eq("user_id", user.id)
     .select("id,name,channels,created_at,updated_at")
-    .single();
+    .single());
+
+  if (error) {
+    ({ data, error } = await supabase
+      .from("chanel_preset")
+      .update(patch)
+      .eq("id", id)
+      .eq("user_id", user.id)
+      .select("id,name,channels,created_at,updated_at")
+      .single());
+  }
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ data });
@@ -45,11 +58,21 @@ export async function DELETE(_req: Request, { params }: { params: { id: string }
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const id = params.id;
-  const { error } = await supabase
+  // Try canonical table first, fallback if needed
+  let error: any = null;
+  ({ error } = await supabase
     .from("channel_presets")
     .delete()
     .eq("id", id)
-    .eq("user_id", user.id);
+    .eq("user_id", user.id));
+
+  if (error) {
+    ({ error } = await supabase
+      .from("chanel_preset")
+      .delete()
+      .eq("id", id)
+      .eq("user_id", user.id));
+  }
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ ok: true });

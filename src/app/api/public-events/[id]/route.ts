@@ -61,11 +61,21 @@ export async function GET(
   // 4) Canales: preset o ad-hoc
   let channels: any[] = Array.isArray(ev.channels) ? ev.channels : [];
   if (ev.channel_preset_id) {
-    const { data } = await s
+    // Try canonical table first; if not found, fallback to common misspelling
+    let data: any = null;
+    let error: any = null;
+    ({ data, error } = await s
       .from("channel_presets")
       .select("channels")
       .eq("id", ev.channel_preset_id)
-      .maybeSingle();
+      .maybeSingle());
+    if (error || !Array.isArray(data?.channels)) {
+      ({ data } = await s
+        .from("chanel_preset")
+        .select("channels")
+        .eq("id", ev.channel_preset_id)
+        .maybeSingle());
+    }
     if (Array.isArray(data?.channels)) channels = data!.channels;
   }
 

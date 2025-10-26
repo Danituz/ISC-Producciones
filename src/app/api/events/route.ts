@@ -47,10 +47,11 @@ export async function GET() {
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   // Catálogos para resolver nombres
-  const [scenesRes, croquisRes, presetsRes] = await Promise.all([
+  const [scenesRes, croquisRes, presetsRes, presetsFallbackRes] = await Promise.all([
     s.from("scenes").select("id,name,type").eq("user_id", user.id),
     s.from("croquis").select("id,name,image_url").eq("user_id", user.id),
     s.from("channel_presets").select("id,name").eq("user_id", user.id),
+    s.from("chanel_preset").select("id,name").eq("user_id", user.id),
   ]);
 
   const scenes = (scenesRes.data || []).reduce<Record<string, { name: string; type: string }>>((acc, r) => {
@@ -61,7 +62,8 @@ export async function GET() {
     acc[r.id] = { name: r.name, image_url: r.image_url ?? null };
     return acc;
   }, {});
-  const presets = (presetsRes.data || []).reduce<Record<string, string>>((acc, r) => {
+  const presetsSource = (presetsRes.data && presetsRes.data.length ? presetsRes.data : (presetsFallbackRes.data || []));
+  const presets = (presetsSource || []).reduce<Record<string, string>>((acc, r: any) => {
     acc[r.id] = r.name;
     return acc;
   }, {});
