@@ -15,6 +15,15 @@ export async function GET(req: NextRequest) {
   try {
     const supabase = createRoute();
     await supabase.auth.exchangeCodeForSession(code);
+    // Auto-verify admin for Gmail if configured
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      const email = user?.email?.toLowerCase() || "";
+      const allowGmail = process.env.ADMIN_ALLOW_GMAIL === "1" && email.endsWith("@gmail.com");
+      if (user && allowGmail) {
+        await supabase.auth.updateUser({ data: { admin_verified: true, admin_verified_at: new Date().toISOString() } });
+      }
+    } catch {}
     // si todo ok, redirige al destino (por defecto /admin)
     return NextResponse.redirect(`${origin}${next}`);
   } catch (e) {

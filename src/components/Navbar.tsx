@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export function NavbarActions() {
   const supabase = createClient();
@@ -18,8 +19,23 @@ export function NavbarActions() {
   if (email) {
     return (
       <div className="flex items-center gap-3">
-        <Link href="/admin" className="text-sm text-zinc-300 hover:underline">Admin</Link>
-        <Link href="/admin/resources" className="text-sm text-zinc-300 hover:underline">Recursos</Link>
+        <div className="hidden items-center gap-3 sm:flex">
+          <Link href="/admin" className="text-sm text-zinc-300 hover:underline">Admin</Link>
+          <Link href="/admin/resources" className="text-sm text-zinc-300 hover:underline">Recursos</Link>
+          <Link href="/admin/payroll" className="text-sm text-zinc-300 hover:underline">Nómina</Link>
+        </div>
+        <div className="sm:hidden">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="sm" variant="secondary">Menú</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem asChild><Link href="/admin">Admin</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link href="/admin/resources">Recursos</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link href="/admin/payroll">Nómina</Link></DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
         <span className="hidden text-xs text-zinc-400 sm:inline">{email}</span>
         <Button
           variant="outline"
@@ -38,3 +54,4 @@ export function NavbarActions() {
     </Button>
   );
 }
+
