@@ -3,6 +3,8 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
 import { NavbarActions } from "@/components/Navbar";
+import Image from "next/image";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "ISC Producciones",
@@ -23,10 +25,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="relative min-h-dvh">
           <header className="sticky top-0 z-30 border-b border-border/50 bg-background/70 backdrop-blur">
             <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3">
-              <a className="flex items-center gap-2">
-                <div className="size-2 rounded-full bg-zinc-400" />
+              <Link href="/" className="flex items-center gap-2">
+                <Image src="/logo.png" alt="ISC Producciones" width={24} height={24} className="h-6 w-auto" priority />
                 <span className="text-sm font-medium text-zinc-300">ISC Producciones</span>
-              </a>
+              </Link>
               <NavbarActions />
             </div>
           </header>

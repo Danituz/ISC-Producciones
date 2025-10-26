@@ -34,7 +34,8 @@ export function NavbarActions() {
 
   return (
     <Button asChild size="sm">
-      <Link href="/login">Iniciar sesiÃ³n</Link>
+      <Link href="/login">Iniciar sesión</Link>
     </Button>
   );
 }
+
