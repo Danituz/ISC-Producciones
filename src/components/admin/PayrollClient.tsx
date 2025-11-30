@@ -118,7 +118,7 @@ export default function PayrollClient() {
             onClick={handleExportPdf}
             disabled={loading || exporting || !data}
           >
-            {exporting ? "Generando PDF..." : "Exportar y compartir PDF"}
+            {exporting ? "Generando PDF..." : "Exportar PDF"}
           </Button>
         </div>
         <div className="grid w-full grid-cols-2 gap-3 sm:w-auto sm:grid-cols-3">
