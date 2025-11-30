@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { jsPDF } from "jspdf";
 
 type MemberRow = {
   name: string;
@@ -21,6 +22,7 @@ export default function PayrollClient() {
   const [data, setData] = useState<{ members: MemberRow[]; summary: any } | null>(null);
   const [loading, setLoading] = useState(false);
   const [openMember, setOpenMember] = useState<string | null>(null);
+  const [exporting, setExporting] = useState(false);
 
   const range = useMemo(() => {
     const [y, m] = month.split("-").map(Number);
@@ -61,10 +63,64 @@ export default function PayrollClient() {
     return out;
   }, []);
 
+  const formatCurrency = (value: number) => `$${value.toLocaleString("es-MX")}`;
+
+  const handleExportPdf = () => {
+    if (!data) return;
+    setExporting(true);
+    try {
+      const doc = new jsPDF();
+      const lineHeight = 8;
+      let y = 15;
+
+      const nextLine = (text: string, opts?: { bold?: boolean; size?: number }) => {
+        if (y > 280) {
+          doc.addPage();
+          y = 15;
+        }
+        doc.setFontSize(opts?.size ?? 10);
+        doc.setFont("helvetica", opts?.bold ? "bold" : "normal");
+        doc.text(text, 14, y);
+        y += lineHeight;
+      };
+
+      const rate = data.summary?.rate ?? 800;
+      nextLine("Nómina multimedia", { bold: true, size: 14 });
+      nextLine(`Rango: ${range.start} a ${range.end}`);
+      nextLine(`Tarifa por evento: ${formatCurrency(rate)}`);
+      nextLine(`Total integrantes: ${data.members.length}`);
+      nextLine(`Total eventos: ${data.summary?.total_events ?? 0}`);
+      nextLine(`Total a pagar: ${formatCurrency(data.summary?.total_payout ?? 0)}`);
+      nextLine("");
+
+      data.members.forEach((member) => {
+        nextLine(`${member.name} • ${member.count} eventos • ${formatCurrency(member.total)}`, { bold: true, size: 12 });
+        doc.setFontSize(10);
+        member.events.forEach((ev) => {
+          const roles = ev.roles.join(", ");
+          nextLine(`- ${ev.date} | ${ev.church_or_event} | ${roles}`);
+        });
+        nextLine("");
+      });
+
+      doc.save(`nomina-${range.start}-a-${range.end}.pdf`);
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <section className="space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <h2 className="text-xl font-semibold">Nómina</h2>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+          <h2 className="text-xl font-semibold">Nómina</h2>
+          <Button
+            onClick={handleExportPdf}
+            disabled={loading || exporting || !data}
+          >
+            {exporting ? "Generando PDF..." : "Exportar y compartir PDF"}
+          </Button>
+        </div>
         <div className="grid w-full grid-cols-2 gap-3 sm:w-auto sm:grid-cols-3">
           <div>
             <Label>Mes</Label>
