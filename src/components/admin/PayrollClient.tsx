@@ -85,7 +85,7 @@ export default function PayrollClient() {
       };
 
       const rate = data.summary?.rate ?? 800;
-      nextLine("Nómina multimedia", { bold: true, size: 14 });
+      nextLine("Nómina ISC Producciones", { bold: true, size: 14 });
       nextLine(`Rango: ${range.start} a ${range.end}`);
       nextLine(`Tarifa por evento: ${formatCurrency(rate)}`);
       nextLine(`Total integrantes: ${data.members.length}`);
