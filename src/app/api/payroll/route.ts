@@ -42,7 +42,7 @@ export async function GET(req: Request) {
     });
   }
 
-  const RATE = 650;
+  const RATE = 800;
   const members = Array.from(byMember.entries())
     .sort((a, b) => a[0].localeCompare(b[0]))
     .map(([name, val]) => ({
@@ -63,4 +63,3 @@ export async function GET(req: Request) {
 
   return NextResponse.json({ data: { members, summary } });
 }
-

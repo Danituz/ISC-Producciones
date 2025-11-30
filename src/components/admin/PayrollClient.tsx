@@ -149,7 +149,7 @@ export default function PayrollClient() {
                                       {e.date} • {e.roles.join(", ")}
                                     </div>
                                   </div>
-                                  <div className="text-right">$650</div>
+                                  <div className="text-right">$800</div>
                                 </div>
                               ))}
                             </div>
@@ -167,4 +167,3 @@ export default function PayrollClient() {
     </section>
   );
 }
-
