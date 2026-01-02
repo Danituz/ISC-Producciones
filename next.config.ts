@@ -12,7 +12,6 @@ const nextConfig: NextConfig = {
     ],
   },
   webpack: (config) => {
-    // Ignore canvas module used by konva in Node.js
     config.externals = [...(config.externals || []), { canvas: "canvas" }];
     return config;
   },
