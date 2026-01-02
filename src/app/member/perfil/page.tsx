@@ -22,15 +22,7 @@ type ProfilePrefs = {
 
 export default function MemberPerfilPage() {
   const router = useRouter();
-  const [profile, setProfile] = useState<Profile | null>(() => {
-    if (typeof window === "undefined") return null;
-    try {
-      const raw = localStorage.getItem("isc-active-profile");
-      return raw ? (JSON.parse(raw) as Profile) : null;
-    } catch {
-      return null;
-    }
-  });
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [prefs, setPrefs] = useState<Record<string, ProfilePrefs>>({});
 
   useEffect(() => {

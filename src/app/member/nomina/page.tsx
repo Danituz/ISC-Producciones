@@ -6,15 +6,7 @@ import { MemberNominaView } from "@/components/member/MemberNominaView";
 
 export default function MemberNominaPage() {
   const router = useRouter();
-  const [profile, setProfile] = useState<any>(() => {
-    if (typeof window === "undefined") return null;
-    try {
-      const raw = localStorage.getItem("isc-active-profile");
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
-  });
+  const [profile, setProfile] = useState<any>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
