@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { adminSupabase } from "@/lib/supabase/admin";
 
 function to12(hhmm: string) {
   if (!hhmm) return "";
@@ -11,8 +12,9 @@ function to12(hhmm: string) {
 }
 
 export async function GET(req: Request) {
+  // Usar adminSupabase para evitar RLS, con fallback al cliente normal
   const cookieStore = await cookies();
-  const s = createRouteHandlerClient({ cookies: () => cookieStore });
+  const s = adminSupabase || createRouteHandlerClient({ cookies: () => cookieStore });
 
   // Query params para filtrar
   const url = new URL(req.url);

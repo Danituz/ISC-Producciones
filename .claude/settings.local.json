@@ -6,7 +6,8 @@
       "Bash(ls:*)",
       "Bash(npm install:*)",
       "Bash(npm run build:*)",
-      "Bash(npm view:*)"
+      "Bash(npm view:*)",
+      "Bash(del \"\\\\?\\\\C:\\\\Users\\\\danie\\\\Desktop\\\\ISCProductions\\\\nul\")"
     ]
   }
 }
