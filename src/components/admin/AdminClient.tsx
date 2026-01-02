@@ -25,7 +25,6 @@ import {
   Plus,
   Headphones,
   Lightbulb,
-  Building2,
 } from "lucide-react";
 import EventForm, { type EventFormValues } from "@/components/EventForm";
 import { MonthSelector, getCurrentPeriod } from "@/components/admin/MonthSelector";
@@ -121,7 +120,7 @@ export default function AdminClient({ userEmail }: { userEmail: string }) {
         if (!active) return;
         if (res.ok) {
           const mapped: EventItem[] = (json.data || []).map(mapEvent);
-          setEvents(mapped);
+          setEvents(sortEventsByDateTime(mapped));
         } else {
           toast.error(json.error || "No se pudo cargar");
         }
@@ -173,7 +172,7 @@ export default function AdminClient({ userEmail }: { userEmail: string }) {
     const r = await fetch(`/api/events?period=${period}`, { cache: "no-store" });
     const j = await r.json();
     const mapped: EventItem[] = (j.data || []).map(mapEvent);
-    setEvents(mapped);
+    setEvents(sortEventsByDateTime(mapped));
     setLoading(false);
   }
 

@@ -16,7 +16,6 @@ import {
   Wallet,
   Settings,
   LogOut,
-  X,
 } from "lucide-react";
 
 const navItems = [

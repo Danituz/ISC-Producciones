@@ -5,19 +5,10 @@ import { usePathname } from "next/navigation";
 import { NavbarHome } from "@/components/navbar/NavbarHome";
 import { NavbarMember } from "@/components/navbar/NavbarMember";
 import { NavbarGuest } from "@/components/navbar/NavbarGuest";
-import { createClient } from "@/lib/supabase/client";
 
 export function NavSwitcher() {
   const pathname = usePathname();
-  const supabase = createClient();
-  const [hasSession, setHasSession] = useState(false);
   const [profile, setProfile] = useState<{ role?: string } | null>(null);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setHasSession(!!data.session));
-    const unsub = supabase.auth.onAuthStateChange((_e, session) => setHasSession(!!session));
-    return () => unsub.data.subscription.unsubscribe();
-  }, [supabase]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;

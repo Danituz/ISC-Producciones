@@ -120,7 +120,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-
-/* Oculta el aviso de licencia de tldraw en dev */
-.tl-license { display: none !important; }
